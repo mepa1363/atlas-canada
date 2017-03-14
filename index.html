@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mini Atlas of Canada</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="canada.js"></script>
+    <script>
+        const mapbox_access_token = "pk.eyJ1IjoibWVwYTEzNjMiLCJhIjoiUVdOOEpQOCJ9.2TwSXbKOCmBgV9L3w1HLpg"
+
+        function init() {
+            var mapMinZoom = 3
+            var mapMaxZoom = 10
+            var tileLayerOptions = {
+                minZoom: mapMinZoom,
+                maxZoom: mapMaxZoom,
+                noWrap: true,
+                opacity: 1,
+                attribution: "Data &copy; Natural Resources Canada. Designed CC-BY <a href='http://ebrahim.planyourplace.ca/' target='_blank'>Ebrahim Poorazizi</a>"
+            }
+
+            var topo_ab = L.tileLayer('https://api.mapbox.com/v4/mepa1363.66nbdso4/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_bc = L.tileLayer('https://api.mapbox.com/v4/mepa1363.4onzm6qk/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_sk = L.tileLayer('https://api.mapbox.com/v4/mepa1363.1ecnhifq/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_mb = L.tileLayer('https://api.mapbox.com/v4/mepa1363.1m8qafpu/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_nl = L.tileLayer('https://api.mapbox.com/v4/mepa1363.7brem8p9/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_ns = L.tileLayer('https://api.mapbox.com/v4/mepa1363.6bf3vicm/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_nt = L.tileLayer('https://api.mapbox.com/v4/mepa1363.3mwjpjps/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_nu = L.tileLayer('https://api.mapbox.com/v4/mepa1363.503y8086/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_on = L.tileLayer('https://api.mapbox.com/v4/mepa1363.4l487adk/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_pe = L.tileLayer('https://api.mapbox.com/v4/mepa1363.daa7gx0y/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_qc = L.tileLayer('https://api.mapbox.com/v4/mepa1363.75xawubp/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+            var topo_yt = L.tileLayer('https://api.mapbox.com/v4/mepa1363.0prnka7a/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+
+            var topo = L.layerGroup([topo_ab, topo_bc, topo_sk, topo_mb, topo_on, topo_qc, topo_pe, topo_nl, topo_ns, topo_nt, topo_nu, topo_yt])
+
+            var rivers = L.tileLayer('https://api.mapbox.com/v4/mepa1363.90ftuff9/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+
+            var trails = L.tileLayer('https://api.mapbox.com/v4/mepa1363.59i7kffl/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+
+            var roads = L.tileLayer('https://api.mapbox.com/v4/mepa1363.2e34rgcj/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+
+            var toponym = L.tileLayer('https://api.mapbox.com/v4/mepa1363.77vireqe/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+
+            var railway = L.tileLayer('https://api.mapbox.com/v4/mepa1363.775tv2tp/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+
+            var canada_bounds = L.tileLayer('https://api.mapbox.com/v4/mepa1363.cpbyei3v/{z}/{x}/{y}.png?access_token=' + mapbox_access_token, tileLayerOptions)
+
+            var maps = {
+                "Rivers": rivers,
+                "Topography": topo,
+                "Roads": roads,
+                "Trails": trails,
+                "Railway": railway,
+                "Toponym": toponym
+            }
+
+            var baseMap = {
+                "Boundaries": canada_bounds
+            }
+
+            var map = L.map('map', {
+                layers: [rivers],
+                minZoom: mapMinZoom,
+                maxZoom: mapMaxZoom,
+            }).setView([68, -105], 3)
+
+            // map.setMaxBounds(L.geoJson(canada).getBounds())
+
+            L.control.layers(maps, baseMap, {
+                collapsed: false
+            }).addTo(map)
+
+            canada_bounds.bringToBack()
+
+        }
+    </script>
+    <style>
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .leaflet-container {
+            background-color: #edf0f5;
+        }
+    </style>
+</head>
+
+<body onload="init()">
+    <div id="map"></div>
+</body>
+
+</html>
